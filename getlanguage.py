@@ -1,20 +1,25 @@
+"""Module get languages for x project"""
 import requests
 from getcredentials import geturl, gettkn
 
 
 def check_language(projecto, lenguage):
+    """check language exist in the project"""
     url = f"{geturl()}/api/issues/search"
     auth = (gettkn(), "")
     querystring = {"projects": projecto, "languages": lenguage, "ps": 1}
-    response = requests.get(url, params=querystring, auth=auth, timeout=10)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, params=querystring, auth=auth, timeout=10)
+        response.raise_for_status()
         if response.json()["total"] > 0:
             return lenguage
-    else:
-        print("error de cominicacion")
+    except requests.exceptions.RequestException as e:
+        print(f"Error de comunicación: {e}")
+    return None
 
 
 def get_languages(projecto):
+    """check all posible language"""
     lenguagesactive = []
     lenguages = (
         "abap",
@@ -58,10 +63,9 @@ def get_languages(projecto):
     for lenguage in lenguages:
         if check_language(projecto, lenguage) is not None:
             lenguagesactive += [check_language(projecto, lenguage)]
-
-    print(lenguagesactive)
+    # print(lenguagesactive)
     return lenguagesactive
 
 
-get_languages("master-alfa")
+# get_languages("master-alfa")
 # get_languages("RE-SECREX-20220531")

@@ -1,8 +1,10 @@
+"""Get branches in project"""
 import requests
 from getcredentials import geturl, gettkn
 
 
 def consultar_branch(projecto):
+    """Get branches in project"""
     url = f"{geturl()}/api/project_branches/list"
     auth = (gettkn(), "")
     querystring = {"project": projecto}
@@ -16,4 +18,4 @@ def consultar_branch(projecto):
         print("Error al hacer la solicitud HTTP")
 
 
-consultar_branch("master-alfa")
+# consultar_branch("master-alfa")

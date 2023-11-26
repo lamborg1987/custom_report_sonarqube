@@ -1,7 +1,9 @@
+"""Get issues and create reports csv"""
+# import time
+# from datetime import datetime
 import math
 import threading
 import os
-from datetime import datetime
 import pandas
 import dask.dataframe as dd
 from dask.diagnostics import ProgressBar
@@ -10,16 +12,19 @@ from getcredentials import geturl, gettkn, getstm
 
 ## severity: "INFO", "MINOR","MAJOR","CRITICAL","BLOCKER"
 ## type: "BUG", "VULNERABILITY", "CODE_SMELL"
-## lenguage= abap,apex, c,cs "c#", cpp "c++", cobol, css,cloudformation, docker,flex, go, web "html", json,jsp,java,js,kotlin,kubernetes,objc "Objective-C", php, pli "PL/I", plsql "PL/SQL,py "python",rpg,ruby, scala,secrets,swift,tsql,terraform,text,ts "typescript", vbnet,vb,xml,yaml
+
+# lenguage= abap,apex, c,cs "c#", cpp "c++", cobol, css,cloudformation, docker,flex, go,
+# web "html", json,jsp,java,js,kotlin,kubernetes,objc "Objective-C", php, pli "PL/I",
+# plsql "PL/SQL,py "python",rpg,ruby, scala,secrets,swift,tsql,terraform,text,ts "typescript",
+#  vbnet,vb,xml,yaml
 
 
 def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
-    starttime = datetime.now()
-    print(f"start: {starttime}")
+    """find issues with parameters: project, type, severity, language,
+    branch #branch only for no community version."""
     url = f"{geturl()}/api/issues/search"
     auth = (gettkn(), "")
-    current_datetime = getstm()
-    file_path = f"/{tipo}_{severity}_{lenguaje}_{current_datetime}.csv"
+    # current_datetime = getstm()
     dirpath = f"./{tipo}"
     if branch == "":
         querystring = {
@@ -84,17 +89,18 @@ def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
                     "scope": issue["scope"],
                 }
                 df.loc[len(df)] = registro
-            df.to_csv(dirpath + file_path, index=False)
+            df.to_csv(
+                f"{dirpath}/{tipo}_{severity}_{lenguaje}_{getstm()}.csv",
+                index=False,
+            )
             querystring["p"] += 1
             response = requests.get(url, params=querystring, auth=auth, timeout=10)
     else:
         print("Error al hacer la solicitud HTTP")
-    endtime = datetime.now()
-    processtime = endtime - starttime
-    print(f"termino: {endtime}\n duracion: {processtime}")
 
 
 def call_find_issues(projecto, tipo, severity, lenguaje="", branch=""):
+    """call find_issues in multi Thread"""
     issues_thread = threading.Thread(
         target=find_issues, args=(projecto, tipo, severity, lenguaje, branch)
     )
@@ -103,6 +109,7 @@ def call_find_issues(projecto, tipo, severity, lenguaje="", branch=""):
 
 
 def join_files(tipo):
+    """Join report files for specific issues types"""
     current_datetime = getstm()
     path = f"./{tipo}/"
 
@@ -124,6 +131,7 @@ def join_files(tipo):
 
 
 def join_full_report():
+    """Join all report files"""
     current_datetime = getstm()
     path_bug = ["./BUG/"]
     path_vuln = ["./VULNERABILITY/"]
