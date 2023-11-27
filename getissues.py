@@ -9,12 +9,8 @@ import requests
 from getcredentials import geturl, gettkn, getstm
 
 
-def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
-    """find issues with parameters: project, type, severity, language,
-    branch #branch only for no community version."""
-    url = f"{geturl()}/api/issues/search"
-    auth = (gettkn(), "")
-    dirpath = f"./{tipo}"
+def querystring_b(projecto, tipo, severity, lenguaje, branch):
+    """validate branch is not null"""
     if branch == "":
         querystring = {
             "projects": projecto,
@@ -32,13 +28,23 @@ def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
             "p": 1,
             "branch": branch,
         }
+    return querystring
+
+
+def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
+    """find issues with parameters: project, type, severity, language,
+    branch #branch only for no community version."""
+    url = f"{geturl()}/api/issues/search"
+    auth = (gettkn(), "")
+    dirpath = f"./{tipo}"
+    querystring = querystring_b(projecto, tipo, severity, lenguaje, branch)
 
     response = requests.get(url, params=querystring, auth=auth, timeout=10)
 
     if not os.path.exists(dirpath):
         os.makedirs(dirpath)
     else:
-        pass
+        pass  # dir exist
     if response.status_code == 200:
         paginas = math.ceil(response.json()["total"] / 100)
         if paginas > 100:

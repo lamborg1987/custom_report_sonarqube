@@ -1,3 +1,4 @@
+"""compress all reports"""
 import zipfile
 import os
 import shutil
@@ -6,8 +7,6 @@ from getcredentials import getstm
 
 def compress(directories):
     """compress all reports"""
-    # directories = ["BUG", "VULNERABILITY", "CODE_SMELL"]
-    # directories = directorys
     csv_file = "FULL-REPORT_" + getstm() + ".csv"
 
     zip_file_name = "ALL_reports_" + getstm() + ".zip"

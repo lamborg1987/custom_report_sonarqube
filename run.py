@@ -77,7 +77,7 @@ while True:
     all_languages_found = True
     for lang in language:
         if lang in languages:
-            pass
+            pass  # found languages
         else:
             print(f"\n\033[91mLANGUAGE SELECTED {lang} IS NOT FOUND\033[0m\n")
             all_languages_found = False
@@ -100,7 +100,7 @@ while True:
     all_issue_type_found = True
     for issue_t in issue_type:
         if issue_t in issue_types:
-            pass
+            pass  # found issue type
         else:
             print("\n\033[91mISSUE TYPES  SELECTED IS NOT FOUND\033[0m\n")
             all_issue_type_found = False

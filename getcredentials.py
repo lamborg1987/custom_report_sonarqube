@@ -4,10 +4,12 @@ import sys
 import os
 import requests
 
+FILECACHE = "report.cache"
+
 
 def exit_salir():
     """exit and remove cache"""
-    os.remove("report.cache")
+    os.remove(FILECACHE)
     sys.exit()
 
 
@@ -16,20 +18,20 @@ def exit_salir():
 
 def seturl(url):
     """Set url base sonarquebe ejem: http://sonarqube:9000 o https://sonarquebe"""
-    with open("report.cache", "a", encoding="utf-8") as f:
+    with open(FILECACHE, "a", encoding="utf-8") as f:
         f.write(f"\nurl:{url}")
 
 
 def settkn(tkn):
     """Set user or token for authentication sonarqube"""
-    with open("report.cache", "a", encoding="utf-8") as f:
+    with open(FILECACHE, "a", encoding="utf-8") as f:
         f.write(f"\ntkn:{tkn}")
 
 
 def setstm():
     """Set date time start program"""
     starttime = str(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-    with open("report.cache", "a", encoding="utf-8") as f:
+    with open(FILECACHE, "a", encoding="utf-8") as f:
         f.write(f"\nstm:{starttime}")
 
 
@@ -38,7 +40,7 @@ def setstm():
 
 def geturl():
     """Get url base sonarqube"""
-    with open("report.cache", encoding="utf-8") as f:
+    with open(FILECACHE, encoding="utf-8") as f:
         for line in f:
             if line[:3] == "url":
                 linea = line[4:]
@@ -50,7 +52,7 @@ def geturl():
 
 def gettkn():
     """Get user or token sonarqube"""
-    with open("report.cache", encoding="utf-8") as f:
+    with open(FILECACHE, encoding="utf-8") as f:
         for line in f:
             if line[:3] == "tkn":
                 linea = line[4:]
@@ -62,7 +64,7 @@ def gettkn():
 
 def getstm():
     """Get start time"""
-    with open("report.cache", encoding="utf-8") as f:
+    with open(FILECACHE, encoding="utf-8") as f:
         for line in f:
             if line[:3] == "stm":
                 linea = line[4:]
@@ -109,9 +111,8 @@ def validate_token():
     try:
         response = requests.get(url, auth=auth, timeout=10)
         response.raise_for_status()
-        if response.status_code == 200:
-            if response.text == "pong":
-                return True
+        if response.status_code == 200 and response.text == "pong":
+            return True
         return False
     except requests.exceptions.RequestException as e:
         print(f"\033[91mToken is not correct: {e}\033[0m")
