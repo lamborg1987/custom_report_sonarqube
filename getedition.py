@@ -19,10 +19,7 @@ def get_sonar_edition():
 
 def validate_nocommunity():
     """Validate edition diferent community"""
-    if get_sonar_edition() == "Community":
+    edition = get_sonar_edition()
+    if edition == "Community" or edition is None:
         return False
     return True
-
-
-# print(get_sonar_edition())
-# print(validate_nocommunity())

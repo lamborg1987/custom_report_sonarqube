@@ -63,9 +63,4 @@ def get_languages(projecto):
     for lenguage in lenguages:
         if check_language(projecto, lenguage) is not None:
             lenguagesactive += [check_language(projecto, lenguage)]
-    # print(lenguagesactive)
     return lenguagesactive
-
-
-# get_languages("master-alfa")
-# get_languages("RE-SECREX-20220531")

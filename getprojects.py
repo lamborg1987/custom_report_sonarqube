@@ -18,6 +18,3 @@ def get_project():
     except requests.exceptions.RequestException as e:
         print(f"Error de comunicación: {e}")
     return None
-
-
-# print(get_project())
