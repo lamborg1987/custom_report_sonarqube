@@ -4,17 +4,18 @@ import shutil
 from getcredentials import getstm
 
 
-def compress():
+def compress(directories):
     """compress all reports"""
-    directories = ["BUG", "VULNERABILITY", "CODE_SMELL"]
-    csv_file = "full-report_" + getstm() + ".csv"
+    # directories = ["BUG", "VULNERABILITY", "CODE_SMELL"]
+    # directories = directorys
+    csv_file = "FULL-REPORT_" + getstm() + ".csv"
 
     zip_file_name = "ALL_reports_" + getstm() + ".zip"
 
     with zipfile.ZipFile(zip_file_name, "w") as zip_file:
         for directory in directories:
             for root, dirs, files in os.walk(directory):
-                print(dirs)
+                print(f"Compressing  Reports {dirs}")
                 for file in files:
                     file_path = os.path.join(root, file)
                     arcname = os.path.relpath(file_path, start=directory)

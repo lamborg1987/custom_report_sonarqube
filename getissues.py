@@ -43,7 +43,7 @@ def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
         paginas = math.ceil(response.json()["total"] / 100)
         if paginas > 100:
             print(
-                f"WARNING: Only the first 10,000 results will be shown for the search. Type: {tipo} Severity: {severity}"
+                f"\033[93mWARNING: Only the first 10,000 results will be shown for the search. Type: {tipo} Severity: {severity}\033[0m"
             )
             paginas = 100
         while querystring["p"] <= paginas:
@@ -77,7 +77,7 @@ def find_issues(projecto, tipo, severity, lenguaje="", branch=""):
                 }
                 df.loc[len(df)] = registro
             df.to_csv(
-                f"{dirpath}/{tipo}_{severity}_{lenguaje}_{getstm()}.csv",
+                f"{dirpath}/{tipo}_{severity}_{getstm()}.csv",
                 index=False,
             )
             querystring["p"] += 1
@@ -119,7 +119,7 @@ def join_full_report():
     path_bug = ["./BUG/"]
     path_vuln = ["./VULNERABILITY/"]
     path_csmell = ["./CODE_SMELL/"]
-    final_path = f"./full-report_{current_datetime}.csv"
+    final_path = f"./FULL-REPORT_{current_datetime}.csv"
     paths = []
     file_pattern = "Full"
     df_list = []

@@ -5,8 +5,7 @@ import getedition
 import getbranches
 import getlanguage
 import getissues
-
-# import compressreports
+import compressreports
 
 ## severity: "INFO", "MINOR","MAJOR","CRITICAL","BLOCKER"
 ## type: "BUG", "VULNERABILITY", "CODE_SMELL"
@@ -16,9 +15,9 @@ import getissues
 # plsql "PL/SQL,py "python",rpg,ruby, scala,secrets,swift,tsql,terraform,text,ts "typescript",
 #  vbnet,vb,xml,yaml
 
-print("Welcome to personalized report generator for sonarqube ")
-print("It is recommended to use an admin account")
-print("type exit at any time to exit this app\n")
+print("\033[92mWelcome to personalized report generator for sonarqube\033[0m")
+print("\033[92mIt is recommended to use an admin account\033[0m")
+print("\033[92mtype exit at any time to exit this app\033[0m\n")
 getcredentials.setstm()
 getcredentials.seturl(input("Sonarqube base url: "))
 getcredentials.settkn(input("Sonarqube user token: "))
@@ -78,7 +77,7 @@ while True:
     all_languages_found = True
     for lang in language:
         if lang in languages:
-            print(lang)
+            pass
         else:
             print(f"\n\033[91mLANGUAGE SELECTED {lang} IS NOT FOUND\033[0m\n")
             all_languages_found = False
@@ -101,7 +100,7 @@ while True:
     all_issue_type_found = True
     for issue_t in issue_type:
         if issue_t in issue_types:
-            print(issue_t)
+            pass
         else:
             print("\n\033[91mISSUE TYPES  SELECTED IS NOT FOUND\033[0m\n")
             all_issue_type_found = False
@@ -124,8 +123,9 @@ while True:
     else:
         print("Invalid input. Please type 'yes' or 'no'.")
 
+language = str(language).replace("'", "").removeprefix("[").removesuffix("]")
 if "BUG" in issue_type:
-    print("\ngenerating Bug reports")
+    print("\nGenerating Bug reports")
     getissues.call_find_issues(project, "BUG", "INFO", language, branch)
     getissues.call_find_issues(project, "BUG", "MINOR", language, branch)
     getissues.call_find_issues(project, "BUG", "MAJOR", language, branch)
@@ -133,7 +133,7 @@ if "BUG" in issue_type:
     getissues.call_find_issues(project, "BUG", "BLOCKER", language, branch)
 
 if "VULNERABILITY" in issue_type:
-    print("generating Vulnerability reports")
+    print("Generating Vulnerability reports")
     getissues.call_find_issues(project, "VULNERABILITY", "INFO", language, branch)
     getissues.call_find_issues(project, "VULNERABILITY", "MINOR", language, branch)
     getissues.call_find_issues(project, "VULNERABILITY", "MAJOR", language, branch)
@@ -141,7 +141,7 @@ if "VULNERABILITY" in issue_type:
     getissues.call_find_issues(project, "VULNERABILITY", "BLOCKER", language, branch)
 
 if "CODE_SMELL" in issue_type:
-    print("generating Code Smell reports")
+    print("Generating Code Smell reports\n")
     getissues.call_find_issues(project, "CODE_SMELL", "INFO", language, branch)
     getissues.call_find_issues(project, "CODE_SMELL", "MINOR", language, branch)
     getissues.call_find_issues(project, "CODE_SMELL", "MAJOR", language, branch)
@@ -150,13 +150,14 @@ if "CODE_SMELL" in issue_type:
 
 time.sleep(120)
 
-print("\ngenerating Full reports")
+print("\nGenerating Full reports")
 getissues.join_files("BUG")
 getissues.join_files("VULNERABILITY")
 getissues.join_files("CODE_SMELL")
 
 getissues.join_full_report()
-# print("\nCompressing reports")
-# compressreports.compress()
-print("Clean an exit")
+
+compressreports.compress(issue_type)
+
+print("\nClean and Exit")
 getcredentials.exit_salir()
