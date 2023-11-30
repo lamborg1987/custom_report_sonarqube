@@ -175,6 +175,6 @@ getissues.join_files("CODE_SMELL")
 getissues.join_full_report()
 
 compressreports.compress(issue_type)
-
+input("press any key to exit")
 print("\nClean and Exit")
 getcredentials.exit_salir()

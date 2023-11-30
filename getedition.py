@@ -11,7 +11,6 @@ def get_sonar_edition():
         response = requests.get(url, auth=auth, timeout=10)
         response.raise_for_status()
         edition = response.json()["edition"]
-        print(edition)
         return edition
     except requests.exceptions.RequestException as e:
         print(f"Error de comunicación: {e}")
