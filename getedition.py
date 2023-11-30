@@ -5,13 +5,14 @@ from getcredentials import geturl, gettkn
 
 def get_sonar_edition():
     """Get edition"""
-    url = f"{geturl()}/api/system/info"
+    url = f"{geturl()}/api/navigation/global"
     auth = (gettkn(), "")
     try:
         response = requests.get(url, auth=auth, timeout=10)
         response.raise_for_status()
-        edition = response.json()["System"]
-        return edition["Edition"]
+        edition = response.json()["edition"]
+        print(edition)
+        return edition
     except requests.exceptions.RequestException as e:
         print(f"Error de comunicación: {e}")
     return None

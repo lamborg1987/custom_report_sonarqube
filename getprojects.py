@@ -11,7 +11,6 @@ def get_project():
     try:
         response = requests.get(url, auth=auth, timeout=10)
         response.raise_for_status()
-        print(response.json())
         projects = response.json()["projects"]
         for project in projects:
             projects_list += [project["key"]]
