@@ -6,12 +6,13 @@ from getcredentials import geturl, gettkn
 def get_project():
     """Get projects"""
     projects_list = []
-    url = f"{geturl()}/api/projects/search"
+    url = f"{geturl()}/api/projects/search_my_scannable_projects"
     auth = (gettkn(), "")
     try:
         response = requests.get(url, auth=auth, timeout=10)
         response.raise_for_status()
-        projects = response.json()["components"]
+        print(response.json())
+        projects = response.json()["projects"]
         for project in projects:
             projects_list += [project["key"]]
         return projects_list

@@ -59,6 +59,8 @@ if EDITION is True:
             getcredentials.exit_salir()
         print("\n\033[91mBRANCH SELECTED IS NOT FOUND\033[0m\n")
     print(f"\nBranch seleted: {branch}")
+else:
+    branch=""
 
 while True:
     languages = getlanguage.get_languages(project)
