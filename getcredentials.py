@@ -10,6 +10,7 @@ FILECACHE = "report.cache"
 def exit_salir():
     """exit and remove cache"""
     os.remove(FILECACHE)
+    input("press any key to exit")
     sys.exit()
 
 
